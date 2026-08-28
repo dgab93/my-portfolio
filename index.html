@@ -34,28 +34,127 @@
   </header>
 
   <main>
-    <!-- Hero Section with Profile Picture -->
+    <!-- Hero Section with Interactive Lanyard & ID Badge -->
     <section id="hero" class="hero-section">
-      <div class="hero-content">
-        <p class="greeting">HELLO, WORLD</p>
-
-        <!-- Name & Profile Picture Header -->
-        <div class="hero-identity">
-          <div class="profile-frame">
-            <!-- Replace src="profile.jpg" with your actual photo file -->
-            />
-          </div>
+      <div class="hero-grid">
+        <!-- Left Column: Introduction & Bio -->
+        <div class="hero-content">
+          <p class="greeting">HELLO, WORLD</p>
           <h1 class="hero-title">I'm Dave Gabriel A. Bais.</h1>
+          <h2 class="hero-subtitle">Building minimalist, intentional digital experiences.</h2>
+          <p class="hero-desc">
+            Software developer & creator focusing on clean architecture, intuitive interfaces, and practical problem solving. Proud member of the Computer Society of the Ateneo.
+          </p>
+          <div class="hero-buttons">
+            <a href="#projects" class="btn btn-solid">View Projects</a>
+            <a href="#contact" class="btn btn-outline">Contact Me</a>
+          </div>
         </div>
 
-        <h2 class="hero-subtitle">Building minimalist, intentional digital experiences.</h2>
-        <p class="hero-desc">
-          Software developer & creator focusing on clean architecture, intuitive interfaces, and practical problem
-          solving.
-        </p>
-        <div class="hero-buttons">
-          <a href="#projects" class="btn btn-solid">View Projects</a>
-          <a href="#contact" class="btn btn-outline">Contact Me</a>
+        <!-- Right Column: Interactive Ateneo CompSAt Lanyard & ID Card Stage -->
+        <div class="hero-lanyard-stage" id="lanyard-stage">
+          <!-- Lanyard Wall Mount / Anchor Bracket -->
+          <div class="lanyard-mount">
+            <div class="mount-bracket"></div>
+            <div class="mount-rivet left"></div>
+            <div class="mount-rivet right"></div>
+          </div>
+
+          <!-- Dynamic SVG Lanyard Ribbon with CompSAt Typography -->
+          <svg class="lanyard-svg" id="lanyard-svg" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <!-- Drop shadow for realistic fabric depth -->
+              <filter id="ribbon-shadow" x="-30%" y="-30%" width="160%" height="160%">
+                <feDropShadow dx="0" dy="5" stdDeviation="4" flood-opacity="0.3" />
+              </filter>
+              <!-- Dynamic curve paths populated by JS -->
+              <path id="left-ribbon-path" d="M 120 0 Q 140 90 180 180" />
+              <path id="right-ribbon-path" d="M 180 180 Q 220 90 240 0" />
+            </defs>
+
+            <!-- Base Fabric Straps with Shadow -->
+            <path id="left-ribbon-bg" class="ribbon-strap" filter="url(#ribbon-shadow)" d="" />
+            <path id="right-ribbon-bg" class="ribbon-strap" filter="url(#ribbon-shadow)" d="" />
+
+            <!-- Highlight Edge Trims -->
+            <path id="left-ribbon-edge" class="ribbon-edge" d="" />
+            <path id="right-ribbon-edge" class="ribbon-edge" d="" />
+
+            <!-- Embroidered CompSAt Typography flowing along curves -->
+            <text class="ribbon-text ribbon-text-left">
+              <textPath id="left-text-path" href="#left-ribbon-path" startOffset="50%" text-anchor="middle">
+                COMPUTER SOCIETY OF THE ATENEO • COMPSAT •
+              </textPath>
+            </text>
+            <text class="ribbon-text ribbon-text-right">
+              <textPath id="right-text-path" href="#right-ribbon-path" startOffset="50%" text-anchor="middle">
+                • COMPUTER SOCIETY OF THE ATENEO • COMPSAT
+              </textPath>
+            </text>
+          </svg>
+
+          <!-- Hanging ID Card Wrapper with Realistic Physics -->
+          <div class="id-card-wrapper" id="id-card-wrapper" role="button" aria-label="Interactive Dave Bais Ateneo CompSAt ID Badge. Click and drag to swing.">
+            
+            <!-- Metallic Swivel Clasp & Keyring Mechanism -->
+            <div class="lanyard-clasp">
+              <div class="clasp-buckle"></div>
+              <div class="clasp-swivel"></div>
+              <div class="clasp-clip"></div>
+            </div>
+
+            <!-- The Official Ateneo CompSAt Developer ID Card -->
+            <div class="id-card" id="id-card">
+              <!-- Holographic Sheen Layer -->
+              <div class="id-card-sheen" id="card-sheen"></div>
+              
+              <!-- Badge Slot Punch Hole -->
+              <div class="card-slot-hole"></div>
+
+              <!-- Card Header: Institution & Organization -->
+              <div class="card-header">
+                <div class="card-logo-badge">CompSAt</div>
+                <div class="card-inst-details">
+                  <span class="inst-uni">ATENEO DE MANILA UNIVERSITY</span>
+                  <span class="inst-org">Computer Society of the Ateneo</span>
+                </div>
+              </div>
+
+              <!-- Card Body: Photo & Name -->
+              <div class="card-body">
+                <div class="card-photo-container">
+                  <img src="profile.png" alt="Dave Gabriel A. Bais" class="card-photo-img" />
+                  <div class="card-status-badge" title="Active Developer">
+                    <span class="status-dot"></span> DEV
+                  </div>
+                </div>
+                <div class="card-member-info">
+                  <div class="card-role-chip">OFFICIAL MEMBER</div>
+                  <h3 class="card-full-name">Dave Gabriel A. Bais</h3>
+                  <p class="card-sub-title">Software Developer & Creator</p>
+                </div>
+              </div>
+
+              <!-- Card Footer: Smart Chip, Barcode & Security Watermark -->
+              <div class="card-footer">
+                <div class="card-smart-chip">
+                  <div class="chip-pin"></div>
+                  <div class="chip-pin"></div>
+                  <div class="chip-pin"></div>
+                </div>
+                <div class="card-barcode-box">
+                  <div class="barcode-graphic"></div>
+                  <span class="barcode-text">COMPSAT-2026-DEV-01</span>
+                </div>
+              </div>
+
+              <!-- Interactive Drag Instruction Tag -->
+              <div class="card-drag-hint" id="drag-hint">
+                <span class="drag-hint-icon">✦</span>
+                <span class="drag-hint-label">Drag ID Card</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -236,7 +335,7 @@
     <p>© <span id="year"></span> Dave Gabriel A. Bais — Designed in Monochrome.</p>
   </footer>
 
-  <script src="script.js?v=1.1"></script>
+  <script src="script.js?v=2.0"></script>
 </body>
 
 </html>
