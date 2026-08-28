@@ -19,6 +19,15 @@
   --tag-bg: #27272f;
 
   --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+
+  /* Lanyard & Badge Tokens */
+  --lanyard-strap: #16161a;
+  --lanyard-strap-border: #383844;
+  --lanyard-text: #f4f4f6;
+  --card-surface: rgba(28, 28, 34, 0.95);
+  --card-border: #32323e;
+  --compsat-blue: #3b82f6;
+  --compsat-blue-bg: rgba(59, 130, 246, 0.15);
 }
 
 :root[data-theme="light"] {
@@ -38,6 +47,15 @@
   --tag-bg: #f0f0f4;
 
   --shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+
+  /* Lanyard & Badge Tokens */
+  --lanyard-strap: #1e1e24;
+  --lanyard-strap-border: #2e2e38;
+  --lanyard-text: #ffffff;
+  --card-surface: rgba(255, 255, 255, 0.96);
+  --card-border: #e2e2ea;
+  --compsat-blue: #1d4ed8;
+  --compsat-blue-bg: rgba(29, 78, 216, 0.12);
 }
 
 /* ==========================================================================
@@ -179,15 +197,23 @@ body {
 }
 
 /* ==========================================================================
-   Hero Section & Profile Picture
+   Hero Section & Responsive Grid
    ========================================================================== */
 .hero-section {
-  min-height: 80vh;
+  min-height: 85vh;
   display: flex;
   align-items: center;
-  max-width: 1050px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 4rem 1.5rem;
+  padding: 3.5rem 1.5rem;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.95fr;
+  gap: 3.5rem;
+  align-items: center;
+  width: 100%;
 }
 
 .greeting {
@@ -198,65 +224,462 @@ body {
   margin-bottom: 1.25rem;
 }
 
-.hero-identity {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.profile-frame {
-  width: 76px;
-  height: 76px;
-  border-radius: 50%;
-  border: 2px solid var(--border);
-  overflow: hidden;
-  flex-shrink: 0;
-  box-shadow: var(--shadow);
-  transition: border-color 0.3s ease, transform 0.3s ease;
-}
-
-.profile-frame:hover {
-  border-color: var(--text-main);
-  transform: scale(1.05);
-}
-
-.profile-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(100%);
-  transition: filter 0.3s ease;
-}
-
-.profile-frame:hover .profile-img {
-  filter: grayscale(0%);
-}
-
 .hero-title {
-  font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+  font-size: clamp(2.2rem, 4.2vw, 3.4rem);
   font-weight: 800;
   letter-spacing: -0.5px;
-  line-height: 1.1;
+  line-height: 1.12;
 }
 
 .hero-subtitle {
-  font-size: clamp(1.3rem, 3.2vw, 2rem);
+  font-size: clamp(1.15rem, 2.3vw, 1.7rem);
   font-weight: 600;
   color: var(--text-muted);
-  margin-top: 0.5rem;
+  margin-top: 0.6rem;
 }
 
 .hero-desc {
-  max-width: 580px;
+  max-width: 520px;
   color: var(--text-muted);
-  font-size: 1.05rem;
-  margin: 1.5rem 0 2rem 0;
+  font-size: 1.02rem;
+  margin: 1.4rem 0 2rem 0;
+  line-height: 1.65;
 }
 
 .hero-buttons {
   display: flex;
   gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   Interactive Ateneo CompSAt Lanyard & ID Card Stage
+   ========================================================================== */
+.hero-lanyard-stage {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  perspective: 1200px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  overflow: visible;
+}
+
+/* Mount Bracket at Top of Stage */
+.lanyard-mount {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 14px;
+  z-index: 15;
+}
+
+.mount-bracket {
+  width: 100%;
+  height: 10px;
+  background: linear-gradient(180deg, #52525b 0%, #27272a 100%);
+  border-radius: 4px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border: 1px solid #3f3f46;
+}
+
+.mount-rivet {
+  position: absolute;
+  top: 2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #d4d4d8 20%, #71717a 100%);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.6);
+}
+
+.mount-rivet.left {
+  left: 14px;
+}
+
+.mount-rivet.right {
+  right: 14px;
+}
+
+/* Dynamic SVG Lanyard Ribbon */
+.lanyard-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 10;
+}
+
+.ribbon-strap {
+  fill: none;
+  stroke: var(--lanyard-strap);
+  stroke-width: 26px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ribbon-edge {
+  fill: none;
+  stroke: var(--lanyard-strap-border);
+  stroke-width: 28px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.8;
+}
+
+.ribbon-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7.5px;
+  font-weight: 800;
+  fill: var(--lanyard-text);
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  pointer-events: none;
+  dominant-baseline: central;
+}
+
+/* ID Card Hanging Wrapper */
+.id-card-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 240px;
+  transform-origin: 50% 0px;
+  z-index: 20;
+  cursor: grab;
+  will-change: transform;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.id-card-wrapper:active,
+.id-card-wrapper.is-dragging {
+  cursor: grabbing;
+}
+
+/* Clasp and Swivel Hardware */
+.lanyard-clasp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: -6px;
+  z-index: 25;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.clasp-buckle {
+  width: 24px;
+  height: 8px;
+  background: linear-gradient(90deg, #3f3f46 0%, #71717a 50%, #3f3f46 100%);
+  border-radius: 2px;
+  border: 1px solid #52525b;
+}
+
+.clasp-swivel {
+  width: 12px;
+  height: 10px;
+  background: linear-gradient(180deg, #a1a1aa 0%, #52525b 100%);
+  border-radius: 2px;
+  margin: -1px 0;
+}
+
+.clasp-clip {
+  width: 16px;
+  height: 18px;
+  border: 3px solid #a1a1aa;
+  border-radius: 4px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(100, 100, 100, 0.8) 100%);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+/* Official Ateneo CompSAt ID Badge */
+.id-card {
+  position: relative;
+  width: 100%;
+  background: var(--card-surface);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 14px 14px 12px 14px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28), 0 2px 8px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transform-style: preserve-3d;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  overflow: hidden;
+}
+
+.id-card-wrapper:hover .id-card {
+  border-color: var(--border-hover);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.35), 0 0 0 1px var(--compsat-blue);
+}
+
+/* Holographic Sheen Overlay */
+.id-card-sheen {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.03) 40%,
+    rgba(59, 130, 246, 0.14) 50%,
+    rgba(255, 255, 255, 0.18) 55%,
+    rgba(147, 51, 234, 0.1) 60%,
+    transparent 80%
+  );
+  pointer-events: none;
+  transform: rotate(25deg);
+  mix-blend-mode: overlay;
+  z-index: 30;
+  transition: opacity 0.3s ease;
+}
+
+/* Badge Slot Hole */
+.card-slot-hole {
+  width: 28px;
+  height: 5px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin: 0 auto 10px auto;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Card Header */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+
+.card-logo-badge {
+  background: var(--compsat-blue);
+  color: #ffffff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 3px 6px;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4);
+}
+
+.card-inst-details {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.inst-uni {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.56rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.inst-org {
+  font-size: 0.64rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+/* Card Body */
+.card-body {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.card-photo-container {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--bg-surface);
+  box-shadow: var(--shadow);
+}
+
+.card-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-status-badge {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  color: #22c55e;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.status-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+}
+
+.card-member-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.card-role-chip {
+  align-self: flex-start;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: var(--compsat-blue);
+  background: var(--compsat-blue-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.card-full-name {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.15;
+  margin-bottom: 2px;
+  letter-spacing: -0.2px;
+}
+
+.card-sub-title {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Card Footer */
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+  border-top: 1px dashed var(--border);
+  gap: 8px;
+}
+
+.card-smart-chip {
+  width: 26px;
+  height: 20px;
+  background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+  border-radius: 4px;
+  border: 1px solid #a16207;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 2px;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+.chip-pin {
+  width: 100%;
+  height: 1px;
+  background: #713f12;
+  opacity: 0.6;
+}
+
+.card-barcode-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.barcode-graphic {
+  width: 110px;
+  height: 15px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--text-main) 0px,
+    var(--text-main) 1px,
+    transparent 1px,
+    transparent 3px,
+    var(--text-main) 3px,
+    var(--text-main) 5px,
+    transparent 5px,
+    transparent 6px,
+    var(--text-main) 6px,
+    var(--text-main) 8px,
+    transparent 8px,
+    transparent 11px
+  );
+  opacity: 0.8;
+}
+
+.barcode-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem;
+  color: var(--text-dim);
+  letter-spacing: 0.8px;
+  margin-top: 2px;
+}
+
+/* Drag Hint Tag */
+.card-drag-hint {
+  margin-top: 8px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  transition: opacity 0.3s ease;
+}
+
+.drag-hint-icon {
+  color: var(--compsat-blue);
+  animation: pulseRotate 2s infinite ease-in-out;
+}
+
+@keyframes pulseRotate {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+  50% { transform: scale(1.25) rotate(180deg); opacity: 1; }
 }
 
 /* ==========================================================================
@@ -529,16 +952,38 @@ body {
 }
 
 /* Responsive */
-@media (max-width: 768px) {
-  .hero-identity {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+@media (max-width: 880px) {
+  .hero-section {
+    padding: 2.5rem 1.5rem;
+    min-height: auto;
   }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .hero-lanyard-stage {
+    height: 470px;
+    margin: 1rem auto 0 auto;
+    max-width: 400px;
+  }
+
   .about-grid {
     grid-template-columns: 1fr;
   }
+}
+
+@media (max-width: 560px) {
   .hero-buttons {
     flex-direction: column;
+  }
+
+  .hero-lanyard-stage {
+    height: 440px;
+  }
+
+  .id-card-wrapper {
+    width: 220px;
   }
 }
