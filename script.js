@@ -135,10 +135,11 @@ contactForm.addEventListener('submit', async (e) => {
   let mountX = stageRect.width / 2;
   let mountY = 8;
 
+  // Initial luxury entrance drop: Start higher and bounce into resting position
   let x = mountX;
-  let y = mountY + L_REST;
+  let y = mountY + 80;
   let vx = 0;
-  let vy = 0;
+  let vy = 7.5;
 
   let rotZ = 0;
   let tiltX = 0;
@@ -278,21 +279,20 @@ contactForm.addEventListener('submit', async (e) => {
     const swingAngle = Math.atan2(x - mountX, y - mountY) * (180 / Math.PI) * 0.72;
     rotZ += (swingAngle - rotZ) * (isDragging ? 0.4 : 0.25);
 
-    // Position Card Wrapper in 3D Stage
+    // Position & rotate Card Wrapper as a unified physical unit (clasp + card + slot hole)
     const leftPos = x - cardWidth / 2;
     const topPos = y;
-    cardWrapper.style.transform = `translate3d(${leftPos.toFixed(2)}px, ${topPos.toFixed(2)}px, 0px)`;
-    card.style.transform = `rotateZ(${rotZ.toFixed(2)}deg) rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg)`;
+    cardWrapper.style.transform = `translate3d(${leftPos.toFixed(2)}px, ${topPos.toFixed(2)}px, 0px) rotateZ(${rotZ.toFixed(2)}deg) rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg)`;
 
     // Update dynamic holographic sheen position
     if (cardSheen) {
       cardSheen.style.transform = `rotate(25deg) translate(${(tiltY * 3).toFixed(1)}px, ${(tiltX * 2).toFixed(1)}px)`;
     }
 
-    // Dynamic SVG Ribbon Curves
+    // Dynamic SVG Ribbon Curves connecting precisely to top of clasp buckle
     const pinL = { x: mountX - PIN_SPREAD, y: mountY };
     const pinR = { x: mountX + PIN_SPREAD, y: mountY };
-    const clip = { x: x, y: y + 2 };
+    const clip = { x: x, y: y }; // Locked to exact top origin of clasp buckle
 
     const dx = x - mountX;
     const dy = y - mountY;
